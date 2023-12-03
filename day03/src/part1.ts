@@ -11,19 +11,12 @@ const getInput = (filename: string) => {
 }
 
 const isDigit = (character: string) => {
-  // if (!character) return false
-  // console.log({ character })
   const code = character.codePointAt(0)
   return 47 < code! && code! < 58
 }
 
 const isSymbol = (character: string) => {
   return character !== '.' && !isDigit(character)
-}
-
-const getDigitValue = (character: string) => {
-  const code = character.codePointAt(0)
-  return code! - 48
 }
 
 const main = () => {
@@ -59,27 +52,18 @@ const main = () => {
     for (const character of line) {
       // console.log({ y, x, character })
       if (isDigit(character)) {
-        number = number * 10 + getDigitValue(character)
+        number = number * 10 + parseInt(character)
         if (!symbolNeighborFound) {
           symbolNeighborFound = hasSymbolNeighbor(x, y)
         }
       } else {
-        if (symbolNeighborFound && number > 0) {
-          // console.log({ number, y, x })
-          total += number
-        } else {
-          // if (number > 0) console.log({ x, y, number })
-        }
+        if (symbolNeighborFound) total += number
         number = 0
         symbolNeighborFound = false
       }
-      // console.log({ symbolNeighborFound })
       x++
     }
-    if (symbolNeighborFound && number > 0) {
-      // console.log({ number, y, x })
-      total += number
-    }
+    if (symbolNeighborFound) total += number
     y++
   }
 

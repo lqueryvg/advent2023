@@ -11,22 +11,12 @@ const getInput = (filename: string) => {
 }
 
 const isDigit = (character: string) => {
-  // if (!character) return false
-  // console.log({ character })
   const code = character.codePointAt(0)
   return 47 < code! && code! < 58
 }
 
-const isSymbol = (character: string) => {
-  return character !== '.' && !isDigit(character)
-}
 const isGear = (character: string) => {
   return character === '*'
-}
-
-const getDigitValue = (character: string) => {
-  const code = character.codePointAt(0)
-  return code! - 48
 }
 
 const main = () => {
@@ -36,19 +26,6 @@ const main = () => {
     if (y < 0 || y + 1 >= lines.length || x < 0 || x + 1 >= lines[0].length)
       return '.'
     return lines[y][x]
-  }
-
-  const hasSymbolNeighbor = (x: number, y: number) => {
-    return (
-      isSymbol(getCharAt(x - 1, y - 1)) ||
-      isSymbol(getCharAt(x - 1, y)) ||
-      isSymbol(getCharAt(x - 1, y + 1)) ||
-      isSymbol(getCharAt(x + 1, y - 1)) ||
-      isSymbol(getCharAt(x + 1, y)) ||
-      isSymbol(getCharAt(x + 1, y + 1)) ||
-      isSymbol(getCharAt(x, y - 1)) ||
-      isSymbol(getCharAt(x, y + 1))
-    )
   }
 
   const getGearLocation = (x: number, y: number) => {
@@ -81,7 +58,7 @@ const main = () => {
     let gearLocation = ''
     for (const character of line) {
       if (isDigit(character)) {
-        number = number * 10 + getDigitValue(character)
+        number = number * 10 + parseInt(character)
         if (gearLocation === '') {
           gearLocation = getGearLocation(x, y)
         }
