@@ -10,10 +10,37 @@ const getInput = (filename: string) => {
   return lines
 }
 
+type Colours = {
+  red: number
+  blue: number
+  green: number
+}
+
 const main = () => {
   const data = getInput('input.txt')
+  let total = 0
 
-  return 'TBD'
+  for (const line of data) {
+    // console.log({ line })
+    const [gameTitle, draws] = line.split(': ')
+    const gameNumber = Number(gameTitle.split(' ')[1])
+    // console.log({ draws, gameNumber })
+    const maxColours = { red: 0, blue: 0, green: 0 }
+    for (const draw of draws.split('; ')) {
+      // console.log({ draw })
+      for (const colourString of draw.split(', ')) {
+        const [count, colourName] = colourString.split(' ')
+        if (maxColours[colourName as keyof Colours] < Number(count))
+          maxColours[colourName as keyof Colours] = Number(count)
+      }
+    }
+    // console.log({ maxColours })
+    const power = maxColours['red'] * maxColours['green'] * maxColours['blue']
+    // console.log({ power })
+    total += power
+  }
+
+  return total
 }
 
 export { main }
