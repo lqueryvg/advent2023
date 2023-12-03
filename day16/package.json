@@ -1,0 +1,13 @@
+{
+  "name": "@advent/day16",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "scripts": {
+    "watch": "nodemon",
+    "build": "rimraf ./build && tsc"
+  },
+  "dependencies": {
+    "floyd-warshall-shortest": "^1.0.2"
+  }
+}
