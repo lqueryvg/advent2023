@@ -14,11 +14,6 @@ const isDigit = (character: string) => {
   return false
 }
 
-const getDigitValue = (character: string) => {
-  const code = character.codePointAt(0)
-  return code! - 48
-}
-
 const main = () => {
   const data = getInput('input.txt')
   let total = 0
@@ -27,7 +22,7 @@ const main = () => {
     let lastDigit = 0
     for (const c of line) {
       if (isDigit(c)) {
-        const thisDigitValue = getDigitValue(c)
+        const thisDigitValue = parseInt(c)
         if (lineResult === 0) lineResult = thisDigitValue * 10
         lastDigit = thisDigitValue
       }
