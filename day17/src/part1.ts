@@ -21,7 +21,7 @@ const intToPoint = (int: number) => {
 
 type Point = { x: number; y: number }
 type PointInt = number
-type Heuristic = (p: PointInt) => number
+type Heuristic = (p: Point) => number
 type CameFromMap = Record<PointInt, PointInt>
 // For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from the start
 // to n currently known.
@@ -85,15 +85,15 @@ const astar = (params: {
   // For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to
   // how cheap a path could be from start to finish if it goes through n.
   const fScore: Record<PointInt, number> = {}
-  fScore[params.start] = params.h(params.start)
-  console.log({ fScore })
+  fScore[params.start] = params.h(intToPoint(params.start))
+  // console.log({ fScore })
 
   let numSteps = 0
   const maxSteps = 1000
   while (true) {
     if (openSet.length === 0) break
     numSteps++
-    console.log({ numSteps })
+    // console.log({ numSteps })
     if (numSteps >= maxSteps) {
       console.log(`giving up after ${numSteps} steps`)
       break
@@ -107,7 +107,8 @@ const astar = (params: {
         lowestFScoreNodeIndex = i
       }
     }
-    console.log({ lowestFScoreNodeIndex })
+    // console.log({ fScore })
+    // console.log({ lowestFScoreNodeIndex })
     const current = openSet[lowestFScoreNodeIndex]
     openSet.splice(lowestFScoreNodeIndex, 1)
 
@@ -123,9 +124,11 @@ const astar = (params: {
     for (const neighbor of getNeighbors(current)) {
       // d(current,neighbor) is the weight of the edge from current to neighbor
       // tentative_gScore is the distance from start to the neighbor through current
-      const tentativeGScore =
-        gScore[current] + d(intToPoint(current), intToPoint(neighbor))
-      console.log({ current, neighbor, tentativeGScore })
+      const currentPoint = intToPoint(current)
+      const neighborPoint = intToPoint(neighbor)
+
+      const tentativeGScore = gScore[current] + d(currentPoint, neighborPoint)
+      // console.log({ currentPoint, neighborPoint, tentativeGScore })
       if (!(neighbor in gScore)) {
         gScore[neighbor] = Number.POSITIVE_INFINITY
       }
@@ -134,9 +137,9 @@ const astar = (params: {
         // This path to neighbor is better than any previous one. Record it!
         cameFrom[neighbor] = current
         gScore[neighbor] = tentativeGScore
-        fScore[neighbor] = tentativeGScore + params.h(neighbor)
+        fScore[neighbor] = tentativeGScore + params.h(neighborPoint)
         if (!openSet.includes(neighbor)) {
-          console.log('push', { neighbor })
+          // console.log('push', { neighborPoint })
           openSet.push(neighbor)
         }
       }
@@ -165,7 +168,9 @@ const main = () => {
     grid,
     start: pointToInt(0, 0),
     goal: pointToInt(width - 1, height - 1),
-    h: (p: PointInt) => 1,
+    h: (p: Point) => {
+      return p.x + p.y
+    },
   })
 
   const pathGrid = Array(height).fill(''.padStart(width, '.'))
@@ -176,7 +181,7 @@ const main = () => {
     const energyChar = grid[point.y][point.x]
     setChar(pathGrid, point.x, point.y, energyChar)
     heatLoss += parseInt(energyChar)
-    console.log({ point })
+    // console.log({ point })
   }
   // console.log({ path })
 
