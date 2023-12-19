@@ -65,7 +65,7 @@ const main = () => {
       const [category, value] = rating.split('=')
       part[category as Category] = parseInt(value)
     }
-    console.log({ part })
+    // console.log({ part })
 
     let workflowName = 'in'
     nextWorkflow: while (true) {
@@ -73,21 +73,16 @@ const main = () => {
       const rules = workflows[workflowName]
       for (const rule of rules) {
         if (typeof rule === 'string') {
-          // console.log({ rule })
           switch (rule) {
             case 'A':
-              // console.log('accept')
               total += part['x'] + part['m'] + part['a'] + part['s']
               continue nextPart
             case 'R':
-              // console.log('reject')
               continue nextPart
           }
-          // console.log('next workflow')
           workflowName = rule
           continue nextWorkflow
         }
-        // console.log({ rule })
 
         if (!'<>'.includes(rule.comparator)) {
           throw new Error('invalid comparator')
@@ -97,10 +92,8 @@ const main = () => {
           (rule.comparator === '>' && part[rule.category] > rule.value)
         ) {
           workflowName = rule.targetWorkflow
-          // console.log({ next: workflowName })
           continue nextWorkflow
         }
-        // console.log('next rule')
       }
       break
     }
