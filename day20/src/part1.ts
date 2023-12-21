@@ -136,7 +136,6 @@ const main = () => {
       pulseQueue.unshift(...newPulses)
     }
   }
-  console.log({ highPulses, lowPulses })
 
   return highPulses * lowPulses
 }
