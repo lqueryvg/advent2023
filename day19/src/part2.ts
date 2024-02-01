@@ -32,7 +32,7 @@ const main = () => {
       const match = rule.match(/(\S+)([<>])(\d+):(\S+)/)
       if (!match) workflow.push(rule)
       else {
-        const [_, category, comparator, value, targetWorkflow] = match!
+        const [_, category, comparator, value, targetWorkflow] = match
         workflow.push({
           category: category as Category,
           comparator: comparator as Comparator,
